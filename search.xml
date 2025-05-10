@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>week5-web-流量分析</title>
+      <link href="/2025/05/10/week5-web-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/"/>
+      <url>/2025/05/10/week5-web-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/</url>
+      
+        <content type="html"><![CDATA[<p><a href="https://www.wireshark.org/download.html">https://www.wireshark.org/download.html</a> 上面的是安装网址，直接安装就好</p><p>我们通常使用wireshark来分析，捕获，可视化网络流量</p><p>flag等信息直接隐藏在流量包中，或者通过分析流量包看流量包中是否有其他文件（jpg,zip,png等类型），通过提取解决，进行下一步分析</p><h1 id="类型："><a href="#类型：" class="headerlink" title="类型："></a>类型：</h1><h2 id="1-流汇聚（直接流汇聚得到flag）"><a href="#1-流汇聚（直接流汇聚得到flag）" class="headerlink" title="1.流汇聚（直接流汇聚得到flag）"></a>1.流汇聚（直接流汇聚得到flag）</h2><p>明文的就不说了，很简单</p><h2 id="2-提取数据的"><a href="#2-提取数据的" class="headerlink" title="2.提取数据的"></a>2.提取数据的</h2><h3 id="1-藏在压缩包中"><a href="#1-藏在压缩包中" class="headerlink" title="(1)藏在压缩包中"></a>(1)藏在压缩包中</h3><p>没找到例题</p><h3 id="2-藏在图片中"><a href="#2-藏在图片中" class="headerlink" title="(2)藏在图片中"></a>(2)藏在图片中</h3><h3 id="Cephalopod"><a href="#Cephalopod" class="headerlink" title="Cephalopod"></a>Cephalopod</h3><p>我们先查找一下，在列表，详情，字节流中都找一下flag这个关键字</p><p><img src="/../images/week5-web-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90.assets/1746891783824-14.png" alt="img"></p><p>我们看到了flag.png这个字符串</p><p>重新搜索一下png文件头（89 50 4E 47)</p><p><img src="/../images/week5-web-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90.assets/1746891783823-1.png" alt="img"></p><p>看到发灰那一行有TCP包，右键追踪一下</p><p><img src="/../images/week5-web-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90.assets/1746891783823-2.png" alt="img"></p><p>我们看到了关键字，我们以原始数据保存一下</p><p>用010打开这个原始文件</p><p>我们已知flag是在一个png中，，已知png的文件头，我们搜索一下</p><p><img src="/../images/week5-web-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90.assets/1746891783823-3.png" alt="img"></p><p>删除前面</p><p>保存为.png,重新打开</p><p><img src="/../images/week5-web-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90.assets/1746891783823-4.png" alt="img"></p><p>这样我们就得到了flag</p><p><a href="https://blog.csdn.net/weixin_42575797/article/details/128471451">https://blog.csdn.net/weixin_42575797/article/details/128471451</a></p><p><a href="https://blog.csdn.net/m0_71274136/article/details/135032787">https://blog.csdn.net/m0_71274136/article/details/135032787</a></p><h2 id="sql注入"><a href="#sql注入" class="headerlink" title="sql注入"></a>sql注入</h2><h3 id="鹤城杯-2021-流量分析"><a href="#鹤城杯-2021-流量分析" class="headerlink" title="[鹤城杯 2021]流量分析"></a>[鹤城杯 2021]流量分析</h3><p>这道题是有关布尔盲注的流量包分析</p><ul><li>布尔盲注爆出数据的原理其实是通过截取单个字符利用Ascii码来爆破字符，最后出现的Ascii码则是对应字符的Ascii码。</li></ul><p>直接利用脚本进行转换</p><p>暂时无法在飞书文档外展示此内容</p><p><img src="/../images/week5-web-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90.assets/1746891783823-5.png" alt="img"></p><h2 id="Misc流量分析"><a href="#Misc流量分析" class="headerlink" title="Misc流量分析"></a>Misc流量分析</h2><p>题目描述:</p><p>小明爱慕小红已久，但是他又不好意思直接给小红表白，就悄悄给小红发了一个flag，你能找到小明发送flag吗？ 注意：flag格式如下： flag{****************<em><strong><strong><strong>7</strong></strong></strong></em>3}</p><h2 id="流量分析1"><a href="#流量分析1" class="headerlink" title="流量分析1"></a>流量分析1</h2><p>题目描述:</p><p>流量分析，你知道这堆流量做了什么事情吗，你能恢复出来flag吗？</p><p><img src="/../images/week5-web-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90.assets/1746891783823-6.png" alt="img"></p><p>我们先追踪tcp流一下试试看</p><p><img src="/../images/week5-web-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90.assets/1746891783823-7.png" alt="img"></p><p>我们将请求包中的url解码试试</p><p>暂时无法在飞书文档外展示此内容</p><p>我们给他url解码</p><p><img src="/../images/week5-web-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90.assets/1746891783823-8.png" alt="img"></p><p>一直进行</p><p><img src="/../images/week5-web-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90.assets/1746891783823-9.png" alt="img"></p><p>解了两次，得到</p><p>暂时无法在飞书文档外展示此内容</p><p>发现ssrf和sql注入</p><p>在上面清楚地看到，41延时3秒</p><p><img src="/../images/week5-web-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90.assets/1746891783823-10.png" alt="img"></p><p>看到</p><p><img src="/../images/week5-web-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90.assets/1746891783823-11.png" alt="img"></p><p>暂时无法在飞书文档外展示此内容</p><p>再进行解码</p><p><img src="/../images/week5-web-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90.assets/1746891783823-12.png" alt="img"></p><p><img src="/../images/week5-web-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90.assets/1746891783823-13.png" alt="img"></p><p>依旧是两次</p><p>暂时无法在飞书文档外展示此内容</p><p>这样我们就获得每一个字符的ascill码值，分别推导：例如第一个是102，那么对应f</p><p>102，108，97，103，123，49，113，119，121，50，55，56，49，125</p><p>f，l，a，g ，{，1，q，w，y，2，7，8，1，}</p><p>flag{1qwy2781}</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> web </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>week5-re-例题</title>
       <link href="/2025/05/10/week5-re-%E4%BE%8B%E9%A2%98/"/>
       <url>/2025/05/10/week5-re-%E4%BE%8B%E9%A2%98/</url>
